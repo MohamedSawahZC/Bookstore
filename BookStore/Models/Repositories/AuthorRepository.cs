@@ -47,6 +47,11 @@
            return authors;
         }
 
+        public List<Author> Search(string term)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Update(int id, Author entity)
         {
             var author = Find(id);

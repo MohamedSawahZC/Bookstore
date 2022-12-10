@@ -63,6 +63,11 @@
             return books;
         }
 
+        public List<Book> Search(string term)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Update(int id,Book newBook)
         {
             var book = Find(id);

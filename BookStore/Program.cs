@@ -7,8 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddMvc();
-builder.Services.AddSingleton<IBookStoreRepository<Author>,AuthorRepository>();
-builder.Services.AddSingleton<IBookStoreRepository<Book>, BookRepsoity>();
+builder.Services.AddScoped<IBookStoreRepository<Author>,AuthorDbRepository>();
+builder.Services.AddScoped<IBookStoreRepository<Book>, BookDbRepository>();
 builder.Services.AddDbContext<BookStoreDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlCon"));
@@ -33,6 +33,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Book}/{action=Index}/{id?}");
 
 app.Run();

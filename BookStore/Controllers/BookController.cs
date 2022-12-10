@@ -52,14 +52,8 @@ namespace BookStore.Controllers
         {
             try
             {
-                string fileName = string.Empty;
-                if (model.File != null)
-                {
-                    string uploads = Path.Combine(hosting.WebRootPath, "uploads");
-                    fileName = model.File.FileName;
-                    string fullPath=Path.Combine(uploads, fileName);
-                    model.File.CopyTo(new FileStream(fullPath, FileMode.Create));
-                }
+                string fileName = UploadFile(model.File)?? UploadFile(model.File);
+               
                 if (model.AuthorId == -1)
                 {
                     ViewBag.Message = "Please select an author from the list";
@@ -69,13 +63,14 @@ namespace BookStore.Controllers
                     };
                     return View(vmodel);
                 }
+                var author = authorRepoosity.Find(model.AuthorId);
                 Book book = new Book
                 {
                     Id = model.BookId,
                     Title = model.Title,
                     Description = model.Description,
                     ImageUrl = fileName,
-                    Author = authorRepoosity.Find(model.AuthorId)
+                    Author = author
                 };
                 bookRepository.Add(book);
                 return RedirectToAction(nameof(Index));
@@ -111,35 +106,21 @@ namespace BookStore.Controllers
         {
             try
             {
-                string fileName = string.Empty;
-                if (viewModel.File != null)
-                {
-                    string uploads = Path.Combine(hosting.WebRootPath, "uploads");
-                    fileName = viewModel.File.FileName;
-                    string fullPath = Path.Combine(uploads, fileName);
-                    //@desc Delete old file
-                    string oldFileName = bookRepository.Find(viewModel.BookId).ImageUrl;
-                    string fullOldPath = Path.Combine(uploads, oldFileName);
-                    if (fullPath != oldFileName)
-                    {
-                        System.IO.File.Delete(fullOldPath);
-                        //@desc Save the new file
-                        viewModel.File.CopyTo(new FileStream(fullPath, FileMode.Create));
-                    }
-
-                }
+                string fileName = UploadFile(viewModel.File,viewModel.ImageUrl) ==null?string.Empty: UploadFile(viewModel.File, viewModel.ImageUrl);
+               
                 Book book = new Book
                 {
+                    Id= viewModel.BookId,
                     Title = viewModel.Title,
                     Description = viewModel.Description,
                     Author = authorRepoosity.Find(viewModel.AuthorId),
                     ImageUrl= fileName,
                 };
-                bookRepository.Update(id,book);
+                bookRepository.Update(viewModel.BookId, book);
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }
@@ -182,6 +163,47 @@ namespace BookStore.Controllers
             var authors = authorRepoosity.List().ToList();
             authors.Insert(0, new Author { Id = -1, FullName = " -- Please Select an author -- " });
             return authors;
+        }
+        string UploadFile(IFormFile file)
+        {
+            if (file != null)
+            {
+                string uploads = Path.Combine(hosting.WebRootPath, "uploads");
+                string fullPath = Path.Combine(uploads, file.FileName);
+                file.CopyTo(new FileStream(fullPath, FileMode.Create));
+
+                return file.FileName;
+            }
+            return null;
+        }
+        string UploadFile(IFormFile file, string imageUrl)
+        {
+            if (file != null)
+            {
+                string uploads = Path.Combine(hosting.WebRootPath, "uploads");
+
+                string fullPath = Path.Combine(uploads, file.FileName);
+                //@desc Delete old file
+                string fullOldPath = Path.Combine(uploads, imageUrl);
+                if (fullPath != imageUrl)
+                {
+                    System.IO.File.Delete(fullOldPath);
+                    //@desc Save the new file
+                    file.CopyTo(new FileStream(fullPath, FileMode.Create));
+
+                }
+                return fullPath;
+            }
+            else
+            {
+                return imageUrl;
+            }
+
+        }
+        public ActionResult Search(string term)
+        {
+            var result = bookRepository.Search(term);
+            return View("Index",result);
         }
     }
 }
