@@ -1,5 +1,6 @@
 using BookStore.Models;
 using BookStore.Models.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +9,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddMvc();
 builder.Services.AddSingleton<IBookStoreRepository<Author>,AuthorRepository>();
 builder.Services.AddSingleton<IBookStoreRepository<Book>, BookRepsoity>();
-
+builder.Services.AddDbContext<BookStoreDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlCon"));
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

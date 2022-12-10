@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "VUqPqBD4zp8xl7UKJ6j7RHZ+8hRse1UlXGuKF3Dy9qY=",
+  "Hash": "XO6tXgCn4T8slxEcLAnMsu5JXZ4Skc49zOqR/47rCKc=",
   "Source": "BookStore",
   "BasePath": "_content/BookStore",
   "Mode": "Default",
@@ -2259,6 +2259,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\twitter-bootstrap\\scss\\vendor\\_rfs.scss"
+    },
+    {
+      "Identity": "C:\\Users\\Sawah\\Desktop\\BookStore\\BookStore\\wwwroot\\uploads\\3.jpg",
+      "SourceId": "BookStore",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Sawah\\Desktop\\BookStore\\BookStore\\wwwroot\\",
+      "BasePath": "_content/BookStore",
+      "RelativePath": "uploads/3.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\3.jpg"
     }
   ]
 }

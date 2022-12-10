@@ -12,24 +12,37 @@
                 {
                     Id = 1,
                     Title="C# Programming",
-                    Description="No Description"
+                    Description="No Description",
+                    Author = new Author
+                    {
+                        Id=1
+                    }
                 },
                 new Book
                 {
                     Id = 2,
                     Title="Python Programming",
-                    Description="No Data"
+                    Description="No Data",
+                    Author = new Author
+                    {
+                        Id=2
+                    }
                 },
                 new Book
                 {
                     Id = 3,
                     Title="Java Programming",
-                    Description="No Content"
+                    Description="No Content",
+                    Author = new Author
+                    {
+                        Id=3
+                    }
                 }
             };
         }
         public void Add(Book entity)
         {
+            entity.Id = List().Count+1;
             books.Add(entity);
         }
 
@@ -56,6 +69,7 @@
             book.Title = newBook.Title;
             book.Description = newBook.Description;
             book.Author= newBook.Author;
+            book.ImageUrl = newBook.ImageUrl;
         }
     }
 }
